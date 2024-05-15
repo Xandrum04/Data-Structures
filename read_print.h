@@ -82,7 +82,7 @@ void Print_Data()
 {   
     //for loop to print array of structs data
     for (int i = 0; i < row_counter; ++i) {
-        cout << "Period: " << data[i].Period << ", Birth_Death: " << data[i].Birth_Death << ", Region: " << data[i].Region << ", Count: " << data[i].Count << endl;
+        cout << "Period: " << data[i].Period << ", Birth_Death: " << (data[i].Birth_Death ? "Birth" : "Death") << ", Region: " << data[i].Region << ", Count: " << data[i].Count << endl;
     }
 }
 
