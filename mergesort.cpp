@@ -7,35 +7,6 @@ using namespace std;
 using namespace chrono;
 
 
-// Function to calculate birth sums for each region between 2005 and 2022
-void CalculateBirthSums() {
-    // Initialize array to store summed counts for each region
-    
-
-    // Initialize summed counts for each region to zero
-    for (int i = 0; i < MAXSUMS; ++i) {
-        Summedcounts[i].Region = data[i].Region;
-        Summedcounts[i].Sum = 0;
-    }
-
-    // Calculate summed counts for each region between 2005 and 2022
-    for (int i = 0; i < row_counter; ++i) {
-        if (data[i].Period >= 2005 && data[i].Period <= 2022 && data[i].Birth_Death) {
-            // Find the index of the region in Summedcounts array
-            int regionIndex = -1;
-            for (int j = 0; j < MAXROWS; ++j) {
-                if (Summedcounts[j].Region == data[i].Region) {
-                    regionIndex = j;
-                    break;
-                }
-            }
-            // Add birth count to the summed count for the corresponding region
-            if (regionIndex != -1) {
-                Summedcounts[regionIndex].Sum += data[i].Count;
-            }
-        }
-    }
-}
 
 
 
@@ -120,6 +91,7 @@ int main()
     auto duration = duration_cast<nanoseconds>(end_time - start_time);
 
     // Print the contents of Summedcounts array
+    cout << "Summed Birth Counts for each region between 2005 and 2022 :" << endl << endl;
     PrintSummedCounts(Summedcounts, MAXSUMS);
     
 // Print the execution time
