@@ -1,7 +1,14 @@
 #include "read_print.h" //access read_print.h
 #include <iostream>
 #include <string>
+<<<<<<< HEAD
 #include <chrono> // Include chrono for time measurements
+=======
+#include <chrono> // library for time calculation
+#include <vector>
+#include <algorithm>
+
+>>>>>>> 4ab77642f2d3be70fa9f1682d87760a6839fc5d3
 
 using namespace std;
 using namespace chrono;
@@ -66,6 +73,45 @@ void quickSort(SummedCount arr[], int low, int high) {
 }
 
 
+<<<<<<< HEAD
+
+=======
+void Print_Data() {
+    string current_region = "";
+    int total_birth_count = 0;
+
+    // Create a vector of pairs to store region and total birth count
+    vector<pair<string, int>> region_counts;
+
+    for (int i = 0; i < MAXROWS; ++i) {
+        if (data[i].Birth_Death) {
+            if (data[i].Region != current_region) {
+                if (current_region != "") {
+                    region_counts.push_back(make_pair(current_region, total_birth_count));
+                }
+                current_region = data[i].Region;
+                total_birth_count = 0;
+            }
+            total_birth_count += data[i].Count;
+        }
+    }
+
+    // Add the last region and its total birth count to the vector
+    if (current_region != "") {
+        region_counts.push_back(make_pair(current_region, total_birth_count));
+    }
+
+    // Sort the vector based on total birth count
+    sort(region_counts.begin(), region_counts.end(), [](const pair<string, int>& a, const pair<string, int>& b) {
+        return a.second < b.second;
+    });
+
+    // Print the sorted regions and their total birth counts
+    for (const auto& pair : region_counts) {
+        cout << "Region: " << pair.first << ", Total Birth Count: " << pair.second << endl;
+    }
+}
+>>>>>>> 4ab77642f2d3be70fa9f1682d87760a6839fc5d3
 
 
 
