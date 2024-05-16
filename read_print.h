@@ -24,7 +24,7 @@ struct SummedCount {
     int Sum;
 };
 
-SummedCount Summedcounts[MAXROWS]; // Make array of summed counts
+SummedCount Summedcounts[MAXSUMS]; // Make array of summed counts
 
 
 
@@ -90,11 +90,72 @@ int Read_Data()
 
 }
 
+// Function to calculate birth sums for each region between 2005 and 2022
+void CalculateBirthSums() {
+    // Initialize array to store summed counts for each region
+    
+
+    // Initialize summed counts for each region to zero
+    for (int i = 0; i < MAXSUMS; ++i) {
+        Summedcounts[i].Region = data[i].Region;
+        Summedcounts[i].Sum = 0;
+    }
+
+    // Calculate summed counts for each region between 2005 and 2022
+    for (int i = 0; i < row_counter; ++i) {
+        if (data[i].Period >= 2005 && data[i].Period <= 2022 && data[i].Birth_Death) { //
+            // Find the index of the region in Summedcounts array
+            int regionIndex = -1;
+            for (int j = 0; j < MAXROWS; ++j) {
+                if (Summedcounts[j].Region == data[i].Region) {
+                    regionIndex = j;
+                    break;
+                }
+            }
+            // Add birth count to the summed count for the corresponding region
+            if (regionIndex != -1) {
+                Summedcounts[regionIndex].Sum += data[i].Count;
+            }
+        }
+    }
+}
+
+// Function to calculate death sums for each region between 2005 and 2022
+void CalculateDeathSums() {
+    // Initialize array to store summed counts for each region
+    
+
+    // Initialize summed counts for each region to zero
+    for (int i = 0; i < MAXSUMS; ++i) {
+        Summedcounts[i].Region = data[i].Region;
+        Summedcounts[i].Sum = 0;
+    }
+
+    // Calculate summed counts for each region between 2005 and 2022
+    for (int i = 0; i < row_counter; ++i) {
+        if (data[i].Period >= 2005 && data[i].Period <= 2022 && (!data[i].Birth_Death)) { //
+            // Find the index of the region in Summedcounts array
+            int regionIndex = -1;
+            for (int j = 0; j < MAXROWS; ++j) {
+                if (Summedcounts[j].Region == data[i].Region) {
+                    regionIndex = j;
+                    break;
+                }
+            }
+            // Add death count to the summed count for the corresponding region
+            if (regionIndex != -1) {
+                Summedcounts[regionIndex].Sum += data[i].Count;
+            }
+        }
+    }
+}
+
+
 
 void PrintSummedCounts(SummedCount Summedcounts[], int size) {
-    cout << "Summed Birth Counts for Each Region between 2005 and 2022:" << endl;
     for (int i = 0; i < size; ++i) {
         cout << "Region: " << Summedcounts[i].Region << ", Sum: " << Summedcounts[i].Sum << endl;
     }
 }
+
 
