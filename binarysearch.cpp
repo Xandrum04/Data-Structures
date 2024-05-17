@@ -64,8 +64,8 @@ int main()
 
     // Calculate duration
     auto duration = duration_cast<nanoseconds>(end_time - start_time);
-     
-    
+
+   
 // Print the execution time
     cout << "Binary execution time: " << duration.count() << " nanoseconds" << endl;
     
