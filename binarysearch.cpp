@@ -64,10 +64,8 @@ int main()
 
     // Calculate duration
     auto duration = duration_cast<nanoseconds>(end_time - start_time);
-
-    // Print the contents of Summedcounts array
-    cout << "Summed Birth Counts for each region between 2005 and 2022 :" << endl << endl;
-    PrintSummedCounts(Summedcounts, MAXSUMS);
+    
+    
     
 // Print the execution time
     cout << "Binary execution time: " << duration.count() << " nanoseconds" << endl;
