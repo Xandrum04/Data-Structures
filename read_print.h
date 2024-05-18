@@ -12,7 +12,7 @@ struct Row {
 };
 
     const int MAXROWS = 648; //max number of rows
-    const int MAXSUMS = 17; //max number of summedCounts
+    const int MAXSUMS = 17; //max number of summedCount Regions
 
     Row data[MAXROWS]; //make array of Row structs
 
@@ -24,7 +24,7 @@ struct SummedCount {
     int Sum;
 };
 
-SummedCount Summedcounts[MAXSUMS]; // Make array of summed counts
+SummedCount Summedcounts[MAXSUMS]; // Make array of summed count Regions
 
 
 
@@ -92,7 +92,6 @@ int Read_Data()
 
 // Function to calculate birth sums for each region between 2005 and 2022
 void CalculateBirthSums() {
-    // Initialize array to store summed counts for each region
     
 
     // Initialize summed counts for each region to zero
@@ -103,11 +102,11 @@ void CalculateBirthSums() {
 
     // Calculate summed counts for each region between 2005 and 2022
     for (int i = 0; i < row_counter; ++i) {
-        if (data[i].Period >= 2005 && data[i].Period <= 2022 && data[i].Birth_Death) { //
+        if (data[i].Period >= 2005 && data[i].Period <= 2022 && data[i].Birth_Death) { // if data[1].Birth_Detah == 1
             // Find the index of the region in Summedcounts array
             int regionIndex = -1;
             for (int j = 0; j < MAXROWS; ++j) {
-                if (Summedcounts[j].Region == data[i].Region) {
+                if (Summedcounts[j].Region == data[i].Region) { //make a copies of the regions in data[] that have births
                     regionIndex = j;
                     break;
                 }
@@ -122,7 +121,7 @@ void CalculateBirthSums() {
 
 // Function to calculate death sums for each region between 2005 and 2022
 void CalculateDeathSums() {
-    // Initialize array to store summed counts for each region
+
     
 
     // Initialize summed counts for each region to zero
@@ -133,11 +132,11 @@ void CalculateDeathSums() {
 
     // Calculate summed counts for each region between 2005 and 2022
     for (int i = 0; i < row_counter; ++i) {
-        if (data[i].Period >= 2005 && data[i].Period <= 2022 && (!data[i].Birth_Death)) { //
+        if (data[i].Period >= 2005 && data[i].Period <= 2022 && (!data[i].Birth_Death)) { // if data[1].Birth_Detah == 0
             // Find the index of the region in Summedcounts array
             int regionIndex = -1;
             for (int j = 0; j < MAXROWS; ++j) {
-                if (Summedcounts[j].Region == data[i].Region) {
+                if (Summedcounts[j].Region == data[i].Region) { //make a copies of the regions in data[] that have deaths
                     regionIndex = j;
                     break;
                 }
