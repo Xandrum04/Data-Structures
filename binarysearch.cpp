@@ -12,16 +12,16 @@ using namespace chrono;
     heapSort(Summedcounts, size);
 
     // Binary search for the left boundary (b1)
-    int left = 0, right = size - 1;
-    int leftBoundary = -1;
+    int left = 0, right = size - 1;  // define the index left and right of the array
+    int leftBoundary = -1;           // leftboundary= the first sum to be greater than b1
 
-    while (left <= right) {
-        int mid = left + (right - left) / 2;
-        if (Summedcounts[mid].Sum >= b1) {
+    while (left <= right) {       //check if all sums between b1 and b2 have been
+        int mid = left + (right - left) / 2;   //find median
+        if (Summedcounts[mid].Sum >= b1) {     //if the sum of the median index is >= b1, then make the median the leftboundary
             leftBoundary = mid;
-            right = mid - 1;
+            right = mid - 1;      //update the number of right to the updated number of cells in Summedcounts
         } else {
-            left = mid + 1;
+            left = mid + 1;       //if the sum of the median index is <= b1, then update left by moving it one cell after the median
         }
     }
 
@@ -53,7 +53,7 @@ int main()
  // Start measuring time
     auto start_time = high_resolution_clock::now();
 
-    int b1, b2;
+    int b1, b2; //define bound b1 and bound b2
     cout << "Enter the lower bound (b1) and upper bound (b2) for the birth counts range: ";
     cin >> b1 >> b2;
 
