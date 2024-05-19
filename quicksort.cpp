@@ -56,7 +56,7 @@ int main() {
     auto end_time = high_resolution_clock::now();
 
     // Calculate duration
-    auto duration = duration_cast<nanoseconds>(end_time - start_time);
+    auto duration = duration_cast<microseconds>(end_time - start_time);
 
 
     // Print the contents of Summedcounts array
@@ -64,7 +64,7 @@ int main() {
     PrintSummedCounts(Summedcounts, MAXSUMS);
     
 // Print the execution time
-    cout << "Quicksort execution time: " << duration.count() << " nanoseconds" << endl;
+    cout << "Quicksort execution time: " << duration.count() << " microseconds" << endl;
     
     return 0;
 }
