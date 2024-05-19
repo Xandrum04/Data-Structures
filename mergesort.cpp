@@ -88,14 +88,14 @@ int main()
     auto end_time = high_resolution_clock::now();
 
     // Calculate duration
-    auto duration = duration_cast<nanoseconds>(end_time - start_time);
+    auto duration = duration_cast<microseconds>(end_time - start_time);
 
     // Print the contents of Summedcounts array
     cout << "Summed Birth Counts for each region between 2005 and 2022 :" << endl << endl;
     PrintSummedCounts(Summedcounts, MAXSUMS);
     
 // Print the execution time
-    cout << "MergeSort execution time: " << duration.count() << " nanoseconds" << endl;
+    cout << "MergeSort execution time: " << duration.count() << " microseconds" << endl;
     
   
 
