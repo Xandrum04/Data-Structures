@@ -60,14 +60,14 @@ int main() {
     auto end_time = high_resolution_clock::now(); // Record the end time
 
     // Calculate duration
-    auto duration = duration_cast<nanoseconds>(end_time - start_time); // Calculate the duration in nanoseconds
+    auto duration = duration_cast<microseconds>(end_time - start_time); // Calculate the duration in microseconds
 
     // Print the contents of Summedcounts array
     cout << "Summed Death Counts for each region between 2005 and 2022 :" << endl << endl;
     PrintSummedCounts(Summedcounts, MAXSUMS); // Call function to print the summed counts
 
     // Print the execution time
-    cout << "HeapSort execution time: " << duration.count() << " nanoseconds" << endl; // Print the execution time
+    cout << "HeapSort execution time: " << duration.count() << " microseconds" << endl; // Print the execution time
 
     return 0; // Return 0 to indicate successful execution
 }
