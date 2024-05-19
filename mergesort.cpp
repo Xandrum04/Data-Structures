@@ -12,8 +12,8 @@ using namespace chrono;
 
 // Merge function to merge two sorted arrays
 void merge(SummedCount arr[], int l, int m, int r) {
-    int n1 = m - l + 1;
-    int n2 = r - m;
+    int n1 = m - l + 1; //left to median sums
+    int n2 = r - m; //median to right sums
 
     // Create temporary arrays
     SummedCount L[n1], R[n2];
