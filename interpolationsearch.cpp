@@ -12,29 +12,29 @@ using namespace chrono;
     heapSort(Summedcounts, size);
 
     // Interpolation search for the left boundary (b1)
-    int low = 0, high = size - 1;
+    int low = 0, high = size - 1;  // define the index low and high of the array
     int leftBoundary = -1;
 
     while (low <= high && b1 >= Summedcounts[low].Sum && b1 <= Summedcounts[high].Sum) {
         if (low == high) {
-            if (Summedcounts[low].Sum == b1) leftBoundary = low;
+            if (Summedcounts[low].Sum == b1) //if the sum count at index low = b1, make low the leftboundary
+            leftBoundary = low;
             break;
         }
 
         // Estimate the position of b1
-        int pos = low + (((double)(high - low) / 
-            (Summedcounts[high].Sum - Summedcounts[low].Sum)) * (b1 - Summedcounts[low].Sum));
+        int pos = low + (((double)(high - low) / (Summedcounts[high].Sum - Summedcounts[low].Sum)) * (b1 - Summedcounts[low].Sum));
 
-        if (Summedcounts[pos].Sum == b1) {
+        if (Summedcounts[pos].Sum == b1) {  //if sum at index pos = b1 make pos the left boundary
             leftBoundary = pos;
             break;
         }
 
-        if (Summedcounts[pos].Sum < b1) {
+        if (Summedcounts[pos].Sum < b1) {  //if sum at index pos < b1 add 1 to low
             low = pos + 1;
-        } else {
+        } else {                           //if sum at index pos > b1 subtract 1 from high
             high = pos - 1;
-        }
+        } 
     }
 
     if (leftBoundary == -1) {
