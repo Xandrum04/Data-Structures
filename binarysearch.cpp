@@ -17,9 +17,12 @@ using namespace chrono;
 
     while (left <= right) {       //check if all sums between b1 and b2 have been
         int mid = left + (right - left) / 2;   //find median
-        if (Summedcounts[mid].Sum >= b1) {     //if the sum of the median index is >= b1, then make the median the leftboundary
+        int i =0;
+
+        if (Summedcounts[mid].Sum >= b1 && Summedcounts[i].Sum <= b2) {     //if the sum of the median index is >= b1 and the sum of the i index is <= b2 then make the median the leftboundary
             leftBoundary = mid;
             right = mid - 1;      //update the number of right to the updated number of cells in Summedcounts
+            i =+ mid;             //update i by moving it mid number positions right
         } else {
             left = mid + 1;       //if the sum of the median index is <= b1, then update left by moving it one cell after the median
         }
