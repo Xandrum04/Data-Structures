@@ -46,7 +46,7 @@ void InterpolationSearch(SummedCount Summedcounts[], int size, int b1, int b2) {
     }
 
     if (!countsFound) {
-        cout << "No counts found in the specified range." << endl;
+        cout << "No regions found with summed birth counts in the given range." << endl;
     }
 }
 
