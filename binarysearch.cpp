@@ -11,20 +11,20 @@ using namespace chrono;
     // Sort the Summedcounts array using heap sort based on the Sum value
     heapSort(Summedcounts, size);
 
-    // Binary search for the left boundary (b1)
     int left = 0, right = size - 1;  // define the index left and right of the array
-    int leftBoundary = -1;           // leftboundary= the first sum to be greater than b1
+    int leftBoundary = -1;           // leftboundary = the first sum to be greater than b1
 
-    while (left <= right) {       //check if all sums between b1 and b2 have been
-        int mid = left + (right - left) / 2;   //find median
+    while (left <= right) {       //check if all sums between b1 and b2 have been searched
+        int mid = left + (right - left) / 2;   //Calculate median
         int i =0;
 
-        if (Summedcounts[mid].Sum >= b1 && Summedcounts[i].Sum <= b2) {     //if the sum of the median index is >= b1 and the sum of the i index is <= b2 then make the median the leftboundary
+        if (Summedcounts[mid].Sum >= b1 && Summedcounts[i].Sum <= b2) {     // if the sum of the median index is >= b1 and the sum of the i index is <= b2
+                                                                            // then make the median the leftboundary
             leftBoundary = mid;
             right = mid - 1;      //update the number of right to the updated number of cells in Summedcounts
             i =+ mid;             //update i by moving it mid number positions right
         } else {
-            left = mid + 1;       //if the sum of the median index is <= b1, then update left by moving it one cell after the median
+            left = mid + 1;       //if the sum of the median index is <= b1 and the sum of the i index >=b2, update left by moving it one cell after the median
         }
     }
 
@@ -60,17 +60,17 @@ int main()
     cout << "Enter the lower bound (b1) and upper bound (b2) for the birth counts range: ";
     cin >> b1 >> b2;
 
-    BinarySearch(Summedcounts, MAXSUMS, b1, b2);
+    BinarySearch(Summedcounts, MAXSUMS, b1, b2);  // Perform Binary Search on the data
     
     // Stop measuring time
     auto end_time = high_resolution_clock::now();
 
-    // Calculate duration
+    // Calculate the duration
     auto duration = duration_cast<nanoseconds>(end_time - start_time);
 
    
 // Print the execution time
-    cout << "Binary execution time: " << duration.count() << " nanoseconds" << endl;
+    cout << "Binary Search execution time: " << duration.count() << " nanoseconds" << endl;
     
   
 
