@@ -1,22 +1,22 @@
-#include "heapsort.h"  // Include the header file for heapSort function
+#include "heapsort.h"  //access heapsort.h
 #include <iostream>
 #include <string>
-#include <chrono> 
+#include <chrono> // Include chrono for time measurements
 
 using namespace std;
 using namespace chrono;
 
-// Function to perform Interpolation Search on an array of SummedCount objects
 void InterpolationSearch(SummedCount Summedcounts[], int size, int b1, int b2) {
-    heapSort(Summedcounts, size); // Sort the array using heap sort
+    // Sort the Summedcounts array using heap sort based on the Sum value
+    heapSort(Summedcounts, size); 
 
-    int low = 0, high = size - 1;  
-    int leftBoundary = -1; // Initialize leftBoundary to -1
+    int low = 0, high = size - 1;  // define the index low and high of the array
+    int leftBoundary = -1; // leftboundary = the first sum to be greater than b1
     bool countsFound = false;  // Flag to track if counts are found within the range
 
     // Perform Interpolation Search to find the left boundary (first element >= b1)
     while (low <= high && b1 >= Summedcounts[low].Sum && b1 <= Summedcounts[high].Sum) {
-        if (low == high) { // If low and high converge to the same element
+        if (low == high) { // If low and high point to the same element
             if (Summedcounts[low].Sum == b1) 
                 leftBoundary = low; // Set leftBoundary if element equals b1
             break;
@@ -26,14 +26,16 @@ void InterpolationSearch(SummedCount Summedcounts[], int size, int b1, int b2) {
         int pos = low + (((double)(high - low) / (Summedcounts[high].Sum - Summedcounts[low].Sum)) * (b1 - Summedcounts[low].Sum));
 
         if (Summedcounts[pos].Sum == b1) {
-            leftBoundary = pos; // If element at pos equals b1, set leftBoundary
+            leftBoundary = pos; // If element at pos equals b1, leftBoundary = pos 
             break;
         }
 
-        if (Summedcounts[pos].Sum < b1) {
-            low = pos + 1; // Move low to the right
-        } else {
-            high = pos - 1; // Move high to the left
+        if (Summedcounts[pos].Sum < b1) {  // If element at pos less than b1
+            low = pos + 1; //update the number of index low to the updated number of cells in Summedcounts
+        } 
+         // If element at pos greater than b1
+        else {    
+            high = pos - 1; //update the number of index high to the updated number of cells in Summedcounts
         } 
     }
 
@@ -49,27 +51,28 @@ void InterpolationSearch(SummedCount Summedcounts[], int size, int b1, int b2) {
         countsFound = true;  // Set flag to true if any counts are found within the range
     }
 
-    if (!countsFound) {
+    if (!countsFound) {  // if countsfound = false
         cout << "No regions found with summed birth counts in the given range." << endl;
     }
 }
 
 int main() {
-    Read_Data(); // Function to read data into Summedcounts array
-    CalculateBirthSums(); // Function to calculate the summed birth counts for each region
+    Read_Data(); //access Read_Data() from read_print.h
+    CalculateBirthSums(); // Calculate and store summed birth counts for each region between 2005 and 2022
 
-    auto start_time = high_resolution_clock::now(); // Record start time
+    auto start_time = high_resolution_clock::now(); // Start measuring time
 
-    int b1, b2;
+
+    int b1, b2; //define bound b1 and bound b2
     cout << "Enter the lower bound (b1) and upper bound (b2) for the birth counts range: ";
     cin >> b1 >> b2;
 
     InterpolationSearch(Summedcounts, MAXSUMS, b1, b2); // Perform interpolation search on the data
     
-    auto end_time = high_resolution_clock::now(); // Record end time
+    auto end_time = high_resolution_clock::now();  // Stop measuring time
     auto duration = duration_cast<nanoseconds>(end_time - start_time); // Calculate the duration
-
-    cout << "Binary execution time: " << duration.count() << " nanoseconds" << endl; // Output the execution time
+// Print the execution time
+    cout << "Interpolation Search execution time: " << duration.count() << " nanoseconds" << endl; // Output the execution time
 
     return 0;
 }
