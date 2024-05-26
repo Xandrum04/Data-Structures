@@ -1,82 +1,87 @@
-#include "heapsort.h"  // Include the header file for heapSort function
+#include "heapsort.h"  // Access heapsort.h for the heap sort function
 #include <iostream>
 #include <string>
-#include <chrono>
-#include <cmath>
+#include <chrono> // Include chrono for time measurements
+#include <cmath>  // Include cmath for sqrt function
 
 using namespace std;
 using namespace chrono;
 
-// Function to perform Binary Interpolation Search on an array of SummedCount objects
 void BinaryInterpolationSearch(SummedCount Summedcounts[], int size, int b1, int b2) {
-    heapSort(Summedcounts, size); // Sort the array using heap sort
+    // Sort the Summedcounts array using heap sort based on the Sum value
+    heapSort(Summedcounts, size);
 
-    int low = 0, high = size - 1;
-    int leftBoundary = -1; // Initialize leftBoundary to -1
-    bool countsFound = false; // Flag to track if counts are found within the range
+    int left = 0, right = size - 1; // Define the index left and right of the array
+    int next;     // Define next index
+    bool countsFound = false;  // Flag to track if counts are found within the range
 
-    // Perform Exponential Search to find a good range for binary search
-    int step = sqrt(size);
-    int next = low;
+    // Perform Binary Interpolation Search to find the left boundary (first element >= b1)
+    while (left <= right && b1 >= Summedcounts[left].Sum && b1 <= Summedcounts[right].Sum) {
+        int size = right - left + 1; // Calculate the size of the current array
+        int i = 1; // Initialize i with 1 for exponential steps
 
-    // Increase step exponentially to find the range where b1 could be
-    while (next < high && Summedcounts[next].Sum < b1) {
-        next += step;
-        step *= 2;
-    }
+        // Calculate next
+        next = left + (size * (b1 - Summedcounts[left].Sum) / (Summedcounts[right].Sum - Summedcounts[left].Sum));
 
-    // Determine the correct high boundary after exponential search
-    int expLow = next / 2; // Set the lower boundary of the range
-    int expHigh = min(next, high); // Set the upper boundary of the range
+        // If sum at index next isn't b1, keep searching
+        while (Summedcounts[next].Sum != b1) {
+            int jump = pow(2, i) * sqrt(size); // Calculate the exponential jump
 
-    // Perform binary search within the found range
-    while (expLow <= expHigh) {
-        int mid = expLow + (expHigh - expLow) / 2; // Calculate the middle index
-        
-        if (Summedcounts[mid].Sum == b1) {
-            leftBoundary = mid; // If element at mid equals b1, set leftBoundary
+            // Update boundaries using exponential steps
+            if (Summedcounts[next].Sum < b1)
+                left = next;
+            else
+                right = next;
+
+            next = left + (size * (b1 - Summedcounts[left].Sum) / (Summedcounts[right].Sum - Summedcounts[left].Sum));
+            
+            // Break loop if next is out of bounds or if i exceeds the size of the array
+            if (next < 0 || next >= size || i > size)
+                break;
+
+            i *= 2; // Increase i exponentially
+        }
+
+        // If value at next equals b1, break the outer loop
+        if (Summedcounts[next].Sum == b1)
+            break;
+        else {
+            next = -1; // No value found
             break;
         }
-        if (Summedcounts[mid].Sum < b1) {
-            expLow = mid + 1; // Move expLow to the right
-        } else {
-            expHigh = mid - 1; // Move expHigh to the left
-        }
     }
 
-    if (leftBoundary == -1) {
-        leftBoundary = expLow; // If leftBoundary not found, set it to expLow
-    }
-
+    // Determine the left boundary for the range b1 to b2
+    int leftBoundary = (next != -1) ? next : left;  // If next != -1, then leftBoundary = next. Otherwise, leftBoundary = left 
     cout << "Regions with summed birth counts in the range [" << b1 << ", " << b2 << "]:" << endl;
 
     // Iterate from leftBoundary to the end or until the sum exceeds b2
     for (int i = leftBoundary; i < size && Summedcounts[i].Sum <= b2; ++i) {
         cout << "Region: " << Summedcounts[i].Region << ", Sum: " << Summedcounts[i].Sum << endl;
-        countsFound = true; // Set flag to true if any counts are found within the range
+        countsFound = true;  // Set flag to true if any counts are found within the range
     }
 
-    if (!countsFound) {
+    if (!countsFound) {    // If countsFound = false
         cout << "No regions found with summed birth counts in the given range." << endl;
     }
 }
 
 int main() {
-    Read_Data(); // Function to read data into Summedcounts array
-    CalculateBirthSums(); // Function to calculate the summed birth counts for each region
+    Read_Data(); // Access Read_Data() from read_print.h
+    CalculateBirthSums(); // Calculate and store summed birth counts for each region between 2005 and 2022
 
-    auto start_time = high_resolution_clock::now(); // Record start time
+    auto start_time = high_resolution_clock::now(); // Start measuring time
 
-    int b1, b2;
+    int b1, b2; // Define bound b1 and bound b2
     cout << "Enter the lower bound (b1) and upper bound (b2) for the birth counts range: ";
     cin >> b1 >> b2;
 
-    BinaryInterpolationSearch(Summedcounts, MAXSUMS, b1, b2); // Perform binary interpolation search on the data
+    BinaryInterpolationSearch(Summedcounts, MAXSUMS, b1, b2);  // Perform binary interpolation search on the data
     
-    auto end_time = high_resolution_clock::now(); // Record end time
+    auto end_time = high_resolution_clock::now();  // Stop measuring time
     auto duration = duration_cast<nanoseconds>(end_time - start_time); // Calculate the duration
-
-    cout << "Binary execution time: " << duration.count() << " nanoseconds" << endl; // Output the execution time
+    // Print the execution time
+    cout << "Binary Interpolation Search execution time: " << duration.count() << " nanoseconds" << endl; // Output the execution time
 
     return 0;
 }
