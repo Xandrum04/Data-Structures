@@ -21,7 +21,7 @@ void BinaryInterpolationSearch(SummedCount Summedcounts[], int size, int b1, int
         int size = right - left + 1; // Calculate the size of the current array
         
         //calculate next
-        next = left + (size * (b1 - Summedcounts[left].Sum) / (Summedcounts[right].Sum - Summedcounts[left].Sum));
+        next = (size * (b1 - Summedcounts[left].Sum) / (Summedcounts[right].Sum - Summedcounts[left].Sum));
 
         //if sum at index next isn't b1 keep searching
         while (Summedcounts[next].Sum != b1) {
@@ -63,7 +63,7 @@ void BinaryInterpolationSearch(SummedCount Summedcounts[], int size, int b1, int
             }
 
             // Calculate next with updated boundaries
-            next = left + (size * (b1 - Summedcounts[left].Sum) / (Summedcounts[right].Sum - Summedcounts[left].Sum));
+            next = left + (((right-left+1) * (b1 - Summedcounts[left].Sum)) / (Summedcounts[right].Sum - Summedcounts[left].Sum));
             // If value at next equals b1, break the loop
             if (Summedcounts[next].Sum == b1) {
                 break;
