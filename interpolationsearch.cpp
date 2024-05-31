@@ -23,7 +23,7 @@ void InterpolationSearch(SummedCount Summedcounts[], int size, int b1, int b2) {
         }
 
         // Calculate the position using the interpolation formula
-        int pos = low + (((double)(high - low) / (Summedcounts[high].Sum - Summedcounts[low].Sum)) * (b1 - Summedcounts[low].Sum));
+        int pos = low + (((high - low) / (Summedcounts[high].Sum - Summedcounts[low].Sum)) * (b1 - Summedcounts[low].Sum));
 
         if (Summedcounts[pos].Sum == b1) {
             leftBoundary = pos; // If element at pos equals b1, leftBoundary = pos 
