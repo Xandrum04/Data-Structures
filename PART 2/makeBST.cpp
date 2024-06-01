@@ -28,6 +28,14 @@ Node* createNode(Row data) {
 
 // Function to insert a new node into the BST
 void insertNode(Node*& root, Row data) {
+
+// Only insert if the data is for births
+    if (!data.Birth_Death) {
+        return;
+    }
+
+
+
     if (root == nullptr) {          //if there is no root create one
         root = createNode(data);
         return;
@@ -119,13 +127,87 @@ void inorderTraversal(Node* root) {
     }
 }
 
+// Function to search for the number of births for a specific time period and region
+int searchBirthCount(Node* root, int period, const string& region) {
+    // Base case: If the root is null, the data doesn't exist
+    if (root == nullptr) {
+        return -1;
+    }
+    
+    // Compare the period and region with the current node's data
+    if (root->data.Region == region && root->data.Period == period) {
+        // If found, return the count
+        return root->data.Count;
+    } else if (root->data.Region > region || (root->data.Region == region && root->data.Period > period)) {
+        // If the target period and region are smaller, search in the left subtree
+        return searchBirthCount(root->left, period, region);
+    } else {
+        // If the target period and region are greater, search in the right subtree
+        return searchBirthCount(root->right, period, region);
+    }
+}
+
+
+// Function to display the menu
+void displayMenu() {
+    cout << "Menu:" << endl;
+    cout << "1. Display the BST with inorder traversal." << endl;
+    cout << "2. Search for the number of births for a specific time period and region." << endl;
+    cout << "3. Modify the number of births for a specific time period and region." << endl;
+    cout << "4. Delete a record based on the region." << endl;
+    cout << "5. Exit the application." << endl;
+}
+
+
+
+
 int main() {
     Node* root = buildBST();   //Read file and create BST
     if (root != nullptr) {   //if tree not empty 
         cout << "Binary Search Tree built successfully." << endl;  
 
-        cout << "Inorder Traversal:" << endl;   //print the inorder trsaversal of the current tree
-        inorderTraversal(root);
+        int choice;
+        do {
+            displayMenu(); // Display menu options
+            cout << "Enter your choice: ";
+            cin >> choice;
+            switch (choice) {
+                case 1:
+                    cout << "Inorder Traversal:" << endl;   //print the inorder trsaversal of the current tree
+                    inorderTraversal(root);
+                    break;
+                case 2:{
+                    int searchPeriod, searchCount;
+                    string searchRegion;
+                    cout << "Enter the period to search: ";
+                    cin >> searchPeriod;
+                    cin.ignore(); // Ignore newline character
+                    cout << "Enter the region to search: ";
+                    getline(cin, searchRegion);
+                    searchCount = searchBirthCount(root, searchPeriod, searchRegion);
+                    if (searchCount != -1) {
+                    cout << "Number of births for period " << searchPeriod << " in " << searchRegion << ": " << searchCount << endl;
+                    } else {
+                    cout << "Data not found." << endl;
+                    }
+                    break;
+                }
+                    
+                case 3:
+                    // Implement modification functionality
+                    break;
+                case 4:
+                    // Implement deletion functionality
+                    break;
+                case 5:
+                    cout << "Exiting the application." << endl;
+                    break;
+                default:
+                    cout << "Invalid choice. Please enter a number between 1 and 5." << endl;
+            }
+        } while (choice != 5);
+
+        
     } else {
         cerr << "Failed to build Binary Search Tree." << endl;   //if tree is empty print error
     }
