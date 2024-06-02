@@ -129,10 +129,6 @@ void inorderTraversal(Node* root) {
 
 // Function to search for the number of births for a specific time period and region
 int searchBirthCount(Node* root, int period, const string& region) {
-    // Base case: If the root is null, the data doesn't exist
-    if (root == nullptr) {
-        return -1;
-    }
     
     // Compare the period and region with the current node's data
     if (root->data.Region == region && root->data.Period == period) {
@@ -144,6 +140,29 @@ int searchBirthCount(Node* root, int period, const string& region) {
     } else {
         // If the target period and region are greater, search in the right subtree
         return searchBirthCount(root->right, period, region);
+    }
+}
+
+
+// Function to modify the number of births for a specific time period and region
+void modifyBirthCount(Node* root, int period, const string& region, int newCount) {
+    // Base case: If the root is null, the data doesn't exist
+    if (root == nullptr) {
+        cout << "Data not found." << endl;
+        return;
+    }
+
+    // Compare the period and region with the current node's data
+    if (root->data.Region == region && root->data.Period == period) {
+        // If found, modify the count
+        root->data.Count = newCount;
+        cout << "Number of births for period " << period << " in " << region << " modified to " << newCount << endl;
+    } else if (root->data.Region > region || (root->data.Region == region && root->data.Period > period)) {
+        // If the target period and region are smaller, search in the left subtree
+        modifyBirthCount(root->left, period, region, newCount);
+    } else {
+        // If the target period and region are greater, search in the right subtree
+        modifyBirthCount(root->right, period, region, newCount);
     }
 }
 
@@ -193,9 +212,22 @@ int main() {
                     break;
                 }
                     
-                case 3:
-                    // Implement modification functionality
+                case 3: {
+                    int modifyPeriod, newCount;
+                    string modifyRegion;
+                    cout << "Enter the period to modify: ";
+                    cin >> modifyPeriod;
+                    cin.ignore(); // Αγνόηση του χαρακτήρα νέας γραμμής
+                    cout << "Enter the region to modify: ";
+                    getline(cin, modifyRegion);
+                    cout << "Enter the new count: ";
+                    cin >> newCount;
+                    modifyBirthCount(root, modifyPeriod, modifyRegion, newCount);
                     break;
+                }
+                   
+                
+                        
                 case 4:
                     // Implement deletion functionality
                     break;
