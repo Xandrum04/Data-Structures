@@ -1,5 +1,3 @@
-//4th option in menu ασαφης η διαγραφη στην εκφωνηση
-
 #include <iostream>
 #include <fstream>
 #include <string>
@@ -31,12 +29,10 @@ Node* createNode(Row data) {
 // Function to insert a new node into the BST
 void insertNode(Node*& root, Row data) {
 
-// Only insert if the data is for births
+    // Only insert if the data is for births
     if (!data.Birth_Death) {
         return;
     }
-
-
 
     if (root == nullptr) {          //if there is no root create one
         root = createNode(data);
@@ -49,8 +45,6 @@ void insertNode(Node*& root, Row data) {
 
     } else if (data.Region > root->data.Region) {  // if the region I want to insert is alphabetically > than the root's 
         insertNode(root->right, data);             // then insert it as a right child of the root
-
-
 
     } else {
         // If region is the same, decide based on period
@@ -120,12 +114,21 @@ Node* buildBST() {
     return root;  //return root that points to struct Node 
 }
 
-// Function to traverse and print the BST in inorder
-void inorderTraversal(Node* root) {
-    if (root != nullptr) {      //if tree not empty
-        inorderTraversal(root->left);   // tranverse left subtree
-        cout << "Region: " << root->data.Region << ", Period: " << root->data.Period << ", Count: " << root->data.Count << endl;  // print root (father) node
-        inorderTraversal(root->right);  //tranverse right subtree
+// Function to traverse and print the BST in inorder with region headers
+void inorderTraversal(Node* root, string& currentRegion) {
+    if (root != nullptr) {
+        inorderTraversal(root->left, currentRegion);   // Traverse left subtree
+
+        // If the region changes, print it as a header
+        if (root->data.Region != currentRegion) {
+            currentRegion = root->data.Region;
+            cout << "\n\nREGION: " << currentRegion <<"\n"<< endl;
+        }
+
+        // Print period and count
+        cout << "Period: " << root->data.Period << ", Count: " << root->data.Count << endl;
+
+        inorderTraversal(root->right, currentRegion);  // Traverse right subtree
     }
 }
 
@@ -146,7 +149,6 @@ int searchBirthCount(Node* root, int period, const string& region) {
         return searchBirthCount(root->right, period, region);
     }
 }
-
 
 // Function to modify the number of births for a specific time period and region
 void modifyBirthCount(Node* root, int period, const string& region, int newCount) {
@@ -170,63 +172,49 @@ void modifyBirthCount(Node* root, int period, const string& region, int newCount
     }
 }
 
+// Function to merge two subtrees
+Node* mergeSubtrees(Node* left, Node* right) {
+    // If one of the subtrees is empty, return the other subtree
+    if (left == nullptr) return right;
+    if (right == nullptr) return left;
 
-// Function to find the node with the minimum value in a subtree
-Node* findMin(Node* node) {
-    while (node->left != nullptr) {
-        node = node->left;
+    // Find the rightmost node of the left subtree
+    Node* temp = left;
+    while (temp->right != nullptr) {
+        temp = temp->right;
     }
-    return node;
+
+    // Attach the right subtree to the right of the rightmost node of the left subtree
+    temp->right = right;
+    return left;
 }
 
-// Function to delete a node from the BST
+// Function to delete all nodes with the given region from the BST
 Node* deleteNode(Node* root, const string& region) {
-    // Base case: If the tree is empty
+    // If the tree is empty
     if (root == nullptr) {
         return root;
     }
     
-    // If the region to be deleted is smaller than the root's region, then it lies in the left subtree
-    if (region < root->data.Region) {
-        root->left = deleteNode(root->left, region);
+    // Recursively delete nodes in left and right subtrees
+    root->left = deleteNode(root->left, region);
+    root->right = deleteNode(root->right, region);
+
+    // If the current node has the region to be deleted, delete it and return its child
+    if (root->data.Region == region) {
+        Node* temp = root;
+        root = mergeSubtrees(root->left, root->right);
+        delete temp;
     }
-    // If the region to be deleted is greater than the root's region, then it lies in the right subtree
-    else if (region > root->data.Region) {
-        root->right = deleteNode(root->right, region);
-    }
-    // If region is the same as root's region, then this is the node to be deleted
-    else {
-        // Node with only one child or no child
-        if (root->left == nullptr) {
-            Node* temp = root->right;
-            delete root;
-            return temp;
-        } else if (root->right == nullptr) {
-            Node* temp = root->left;
-            delete root;
-            return temp;
-        }
-        
-        // Node with two children: Get the inorder successor (smallest in the right subtree)
-        Node* temp = findMin(root->right);
-        
-        // Copy the inorder successor's content to this node
-        root->data = temp->data;
-        
-        // Delete the inorder successor
-        root->right = deleteNode(root->right, temp->data.Region);
-    }
+
     return root;
 }
 
 // Function to delete a record based on the region
 void deleteRecordByRegion(Node*& root, const string& region) {
     root = deleteNode(root, region);
-    cout << "Record with region " << region << " deleted successfully." << endl;
+    cout << "All records with region " << region << " deleted successfully." << endl;
 }
-
-
-
 
 // Function to display the menu
 void displayMenu() {
@@ -237,9 +225,6 @@ void displayMenu() {
     cout << "4. Delete a record based on the region." << endl;
     cout << "5. Exit the application." << endl;
 }
-
-
-
 
 int main() {
     Node* root = buildBST();   //Read file and create BST
@@ -254,10 +239,11 @@ int main() {
 
             //switch case for menu options
             switch (choice) {   
-                case 1:
-                    cout << "Inorder Traversal:" << endl;   //print the inorder trsaversal of the current tree
-                    inorderTraversal(root);
-                    break;
+                case 1:{
+                    cout << "Inorder Traversal:" << endl;
+                    string currentRegion = "";  // Initialize with an empty string
+                    inorderTraversal(root, currentRegion);
+                    break;}
                 case 2:{
                     int searchPeriod, searchCount;
                     string searchRegion;
@@ -268,13 +254,12 @@ int main() {
                     getline(cin, searchRegion);
                     searchCount = searchBirthCount(root, searchPeriod, searchRegion);
                     if (searchCount != -1) {
-                    cout << "Number of births for period " << searchPeriod << " in " << searchRegion << ": " << searchCount << endl;
+                        cout << "Number of births for period " << searchPeriod << " in " << searchRegion << ": " << searchCount << endl;
                     } else {
-                    cout << "Data not found." << endl;
+                        cout << "Data not found." << endl;
                     }
                     break;
                 }
-                    
                 case 3: {
                     int modifyPeriod, newCount;
                     string modifyRegion;
@@ -288,10 +273,6 @@ int main() {
                     modifyBirthCount(root, modifyPeriod, modifyRegion, newCount);
                     break;
                 }
-                   
-                
-                        
-                
                 case 4: {
                     string deleteRegion;
                     cout << "Enter the region to delete: ";
@@ -299,8 +280,7 @@ int main() {
                     getline(cin, deleteRegion);
                     deleteRecordByRegion(root, deleteRegion);
                     break;
-                    }
-                
+                }
                 case 5:
                     cout << "Exiting the application." << endl;
                     break;
@@ -308,8 +288,6 @@ int main() {
                     cout << "Invalid choice. Please enter a number between 1 and 5." << endl;
             }
         } while (choice != 5);
-
-        
     } else {
         cerr << "Failed to build Binary Search Tree." << endl;   //if tree is empty print error
     }
