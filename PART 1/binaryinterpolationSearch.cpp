@@ -109,9 +109,9 @@ int main() {
     BinaryInterpolationSearch(Summedcounts, MAXSUMS, b1, b2);  // Perform binary interpolation search on the data
     
     auto end_time = high_resolution_clock::now();  // Stop measuring time
-    auto duration = duration_cast<nanoseconds>(end_time - start_time); // Calculate the duration
+    auto duration = duration_cast<microseconds>(end_time - start_time); // Calculate the duration
     // Print the execution time
-    cout << "Binary Interpolation Search execution time: " << duration.count() << " nanoseconds" << endl; // Output the execution time
+    cout << "Binary Interpolation Search execution time: " << duration.count() << " microseconds" << endl; // Output the execution time
 
     return 0;
 }
