@@ -8,20 +8,21 @@
 
 using namespace std;
 
+// Define a structure to hold data for each row in the file
 struct Row {
-    int Period;
-    bool Birth_Death; // 0=Death, 1=Birth
-    string Region;
-    int Count;
+    int Period;         // Period of data
+    bool Birth_Death;   // Flag indicating if the data is for births (true) or deaths (false)
+    string Region;      // Region for the data
+    int Count;          // Number of births or deaths
 };
 
 // Hash table class with chaining
 class HashTable {
 private:
-    vector<list<Row>> table;
-    int size;
+    vector<list<Row>> table;    // Vector of lists for the hash table
+    int size;                   // Size of the hash table
 
-    // Hash function
+    // Hash function to calculate the index in the table based on the region
     int hashFunction(const string& region) {
         int sum = 0;
         for (char ch : region) {
@@ -149,81 +150,83 @@ void displayMenu() {
 
 int main() {
     const int tableSize = 11; // Size of the hash table
-    HashTable hashTable = buildHashTable(tableSize);
+HashTable hashTable = buildHashTable(tableSize); // Build the hash table
 
-    cout << "Hash Table built successfully." << endl;
+cout << "Hash Table built successfully." << endl;
 
-    int choice;
-    do {
-        displayMenu();
-        cout << "Enter your choice: ";
-        cin >> choice;
+int choice;
+do {
+    displayMenu(); // Display the menu
+    cout << "Enter your choice: ";
+    cin >> choice; // Get user's choice
 
-        if (cin.fail()) {
-            cin.clear(); // Clear the error flag
-            cin.ignore(numeric_limits<streamsize>::max(), '\n'); // Ignore invalid input
+    if (cin.fail()) {
+        cin.clear(); // Clear the error flag
+        cin.ignore(numeric_limits<streamsize>::max(), '\n'); // Ignore invalid input
+        cout << "Invalid choice. Please enter a number between 1 and 5." << endl;
+        continue; // Loop again to get a valid choice
+    }
+
+    switch (choice) {
+        case 1: { // Display all entries in the hash table
+            cout << "Displaying all entries in the hash table:" << endl;
+            hashTable.display();
+            break;
+        }
+        case 2: { // Search for the number of births for a specific time period and region
+            int searchPeriod;
+            string searchRegion;
+            cout << "Enter the period to search: ";
+            cin >> searchPeriod;
+            cin.ignore(numeric_limits<streamsize>::max(), '\n'); // Ignore newline character
+            cout << "Enter the region to search: ";
+            getline(cin, searchRegion);
+
+            Row* result = hashTable.search(searchPeriod, searchRegion);
+            if (result) {
+                cout << "Number of births for period " << searchPeriod << " in " << searchRegion << ": " << result->Count << endl;
+            } else {
+                cout << "Data not found." << endl;
+            }
+            break;
+        }
+        case 3: { // Modify the number of births for a specific time period and region
+            int modifyPeriod, newCount;
+            string modifyRegion;
+            cout << "Enter the period to modify: ";
+            cin >> modifyPeriod;
+            cin.ignore(numeric_limits<streamsize>::max(), '\n'); // Ignore newline character
+            cout << "Enter the region to modify: ";
+            getline(cin, modifyRegion);
+            cout << "Enter the new count: ";
+            cin >> newCount;
+
+            if (hashTable.update(modifyPeriod, modifyRegion, newCount)) {
+                cout << "Number of births for period " << modifyPeriod << " in " << modifyRegion << " modified to " << newCount << endl;
+            } else {
+                cout << "Data not found." << endl;
+            }
+            break;
+        }
+        case 4: { // Delete a record based on the region
+            string deleteRegion;
+            cout << "Enter the region to delete: ";
+            cin.ignore(numeric_limits<streamsize>::max(), '\n'); // Ignore newline character
+            getline(cin, deleteRegion);
+
+            hashTable.deleteByRegion(deleteRegion);
+            cout << "All records with region " << deleteRegion << " deleted successfully." << endl;
+            break;
+        }
+        case 5: // Exit the application
+            cout << "Exiting the application." << endl;
+            break;
+        default:
             cout << "Invalid choice. Please enter a number between 1 and 5." << endl;
-            continue; // Loop again to get a valid choice
-        }
+    }
+} while (choice != 5); // Continue the loop until user chooses to exit
 
-        switch (choice) {
-            case 1: {
-                cout << "Displaying all entries in the hash table:" << endl;
-                hashTable.display();
-                break;
-            }
-            case 2: {
-                int searchPeriod;
-                string searchRegion;
-                cout << "Enter the period to search: ";
-                cin >> searchPeriod;
-                cin.ignore(numeric_limits<streamsize>::max(), '\n'); // Ignore newline character
-                cout << "Enter the region to search: ";
-                getline(cin, searchRegion);
-
-                Row* result = hashTable.search(searchPeriod, searchRegion);
-                if (result) {
-                    cout << "Number of births for period " << searchPeriod << " in " << searchRegion << ": " << result->Count << endl;
-                } else {
-                    cout << "Data not found." << endl;
-                }
-                break;
-            }
-            case 3: {
-                int modifyPeriod, newCount;
-                string modifyRegion;
-                cout << "Enter the period to modify: ";
-                cin >> modifyPeriod;
-                cin.ignore(numeric_limits<streamsize>::max(), '\n'); // Ignore newline character
-                cout << "Enter the region to modify: ";
-                getline(cin, modifyRegion);
-                cout << "Enter the new count: ";
-                cin >> newCount;
-
-                if (hashTable.update(modifyPeriod, modifyRegion, newCount)) {
-                    cout << "Number of births for period " << modifyPeriod << " in " << modifyRegion << " modified to " << newCount << endl;
-                } else {
-                    cout << "Data not found." << endl;
-                }
-                break;
-            }
-            case 4: {
-                string deleteRegion;
-                cout << "Enter the region to delete: ";
-                cin.ignore(numeric_limits<streamsize>::max(), '\n'); // Ignore newline character
-                getline(cin, deleteRegion);
-
-                hashTable.deleteByRegion(deleteRegion);
-                cout << "All records with region " << deleteRegion << " deleted successfully." << endl;
-                break;
-            }
-            case 5:
-                cout << "Exiting the application." << endl;
-                break;
-            default:
-                cout << "Invalid choice. Please enter a number between 1 and 5." << endl;
-        }
-    } while (choice != 5);
-
-    return 0;
+return 0;
 }
+
+   
