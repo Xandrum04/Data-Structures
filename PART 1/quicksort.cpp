@@ -1,12 +1,10 @@
-#include "read_print.h" //access read_print.h
+#include "read_print.h" // Access read_print.h
 #include <iostream>
 #include <string>
 #include <chrono> // Include chrono for time measurements
 
 using namespace std;
 using namespace chrono;
-
-
 
 // Partition function for QuickSort
 int partition(SummedCount arr[], int low, int high) {
@@ -36,35 +34,32 @@ void quickSort(SummedCount arr[], int low, int high) {
     }
 }
 
-
-
-
-
 int main() {
-
-    Read_Data(); //access Read_Data() from read_print.h
+    Read_Data(); // Access Read_Data() from read_print.h
 
     CalculateBirthSums(); // Calculate and store summed birth counts for each region between 2005 and 2022
 
-     // Start measuring time
+    // Start measuring time
     auto start_time = high_resolution_clock::now();
 
-    // Sort Summedcounts based on the total sum of each region using QuickSort
-    quickSort(Summedcounts, 0, MAXSUMS - 1);
+    const int iterations = 1000; // Number of iterations for averaging
+    for (int i = 0; i < iterations; ++i) {
+        // Sort Summedcounts based on the total sum of each region using QuickSort
+        quickSort(Summedcounts, 0, MAXSUMS - 1);
+    }
 
     // Stop measuring time
     auto end_time = high_resolution_clock::now();
 
     // Calculate duration
-    auto duration = duration_cast<nanoseconds>(end_time - start_time);
-
+    auto duration = duration_cast<microseconds>(end_time - start_time);  // Calculate the duration in microseconds
 
     // Print the contents of Summedcounts array
     cout << "Summed Birth Counts for each region between 2005 and 2022 :" << endl << endl;
     PrintSummedCounts(Summedcounts, MAXSUMS);
-    
-// Print the execution time
-    cout << "Quicksort execution time: " << duration.count() << " nanoseconds" << endl;
-    
+
+    // Print the execution time
+    cout << "Average Quicksort execution time: " << duration.count() / iterations << " microseconds" << endl;
+
     return 0;
 }
