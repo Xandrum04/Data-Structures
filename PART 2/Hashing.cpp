@@ -4,6 +4,7 @@
 #include <sstream>
 #include <vector>
 #include <list>
+#include <limits>
 
 using namespace std;
 
@@ -158,6 +159,13 @@ int main() {
         cout << "Enter your choice: ";
         cin >> choice;
 
+        if (cin.fail()) {
+            cin.clear(); // Clear the error flag
+            cin.ignore(numeric_limits<streamsize>::max(), '\n'); // Ignore invalid input
+            cout << "Invalid choice. Please enter a number between 1 and 5." << endl;
+            continue; // Loop again to get a valid choice
+        }
+
         switch (choice) {
             case 1: {
                 cout << "Displaying all entries in the hash table:" << endl;
@@ -169,7 +177,7 @@ int main() {
                 string searchRegion;
                 cout << "Enter the period to search: ";
                 cin >> searchPeriod;
-                cin.ignore(); // Ignore newline character
+                cin.ignore(numeric_limits<streamsize>::max(), '\n'); // Ignore newline character
                 cout << "Enter the region to search: ";
                 getline(cin, searchRegion);
 
@@ -186,7 +194,7 @@ int main() {
                 string modifyRegion;
                 cout << "Enter the period to modify: ";
                 cin >> modifyPeriod;
-                cin.ignore(); // Ignore newline character
+                cin.ignore(numeric_limits<streamsize>::max(), '\n'); // Ignore newline character
                 cout << "Enter the region to modify: ";
                 getline(cin, modifyRegion);
                 cout << "Enter the new count: ";
@@ -202,7 +210,7 @@ int main() {
             case 4: {
                 string deleteRegion;
                 cout << "Enter the region to delete: ";
-                cin.ignore(); // Ignore newline character
+                cin.ignore(numeric_limits<streamsize>::max(), '\n'); // Ignore newline character
                 getline(cin, deleteRegion);
 
                 hashTable.deleteByRegion(deleteRegion);
