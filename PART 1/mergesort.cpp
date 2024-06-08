@@ -75,20 +75,23 @@ int main()
     auto start_time = high_resolution_clock::now();
 
     // Sort Summedcounts based on the total sum of each region in ascending order using MergeSort
-    mergeSort(Summedcounts, 0, MAXSUMS - 1);
+    const int iterations = 1000; // Number of iterations for averaging
+    for (int i = 0; i < iterations; ++i) {
+        mergeSort(Summedcounts, 0, MAXSUMS - 1);
+    }
 
     // Stop measuring time
     auto end_time = high_resolution_clock::now();
 
     // Calculate the duration of the sorting
-    auto duration = duration_cast<nanoseconds>(end_time - start_time);
+    auto duration = duration_cast<microseconds>(end_time - start_time);  // Calculate the duration in microseconds
 
     // Print the contents of the Summedcounts array
     cout << "Summed Birth Counts for each region between 2005 and 2022 :" << endl << endl;
     PrintSummedCounts(Summedcounts, MAXSUMS);
     
     // Print the execution time of the merge sort
-    cout << "MergeSort execution time: " << duration.count() << " nanoseconds" << endl;
+    cout << "Average MergeSort execution time: " << duration.count() / iterations << " microseconds" << endl;
 
     return 0;
 }
