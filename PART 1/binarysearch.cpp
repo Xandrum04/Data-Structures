@@ -66,11 +66,11 @@ int main()
     auto end_time = high_resolution_clock::now();
 
     // Calculate the duration
-    auto duration = duration_cast<nanoseconds>(end_time - start_time);
+    auto duration = duration_cast<microseconds>(end_time - start_time);
 
    
 // Print the execution time
-    cout << "Binary Search execution time: " << duration.count() << " nanoseconds" << endl;
+    cout << "Binary Search execution time: " << duration.count() << " microseconds" << endl;
     
   
 
