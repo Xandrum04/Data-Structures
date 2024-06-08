@@ -53,21 +53,24 @@ int main() {
     // Start measuring time
     auto start_time = high_resolution_clock::now(); // Record the start time
 
-    // Sort Summedcounts based on the total sum of each region in ascending order using HeapSort
-    heapSort(Summedcounts, MAXSUMS); // Call heapSort to sort the summed counts
+    const int iterations = 1000; // Number of iterations for averaging
+    for (int i = 0; i < iterations; ++i) {
+        // Sort Summedcounts based on the total sum of each region in ascending order using HeapSort
+        heapSort(Summedcounts, MAXSUMS); // Call heapSort to sort the summed counts
+    }
 
     // Stop measuring time
     auto end_time = high_resolution_clock::now(); // Record the end time
 
     // Calculate duration
-    auto duration = duration_cast<nanoseconds>(end_time - start_time); // Calculate the duration in nanoseconds
+    auto duration = duration_cast<microseconds>(end_time - start_time); // Calculate the duration in microseconds
 
     // Print the contents of Summedcounts array
     cout << "Summed Death Counts for each region between 2005 and 2022 :" << endl << endl;
-    PrintSummedCounts(Summedcounts, MAXSUMS); // Call function to print the summed counts
+    PrintSummedCounts(Summedcounts, MAXSUMS); 
 
     // Print the execution time
-    cout << "HeapSort execution time: " << duration.count() << " nanoseconds" << endl; // Print the execution time
+    cout << "Average HeapSort execution time: " << duration.count() / iterations << " microseconds" << endl; // Print the execution time
 
-    return 0; // Return 0 to indicate successful execution
+    return 0; 
 }
