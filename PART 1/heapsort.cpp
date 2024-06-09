@@ -1,10 +1,10 @@
-#include "read_print.h" // Include the header file for function declarations
-#include <iostream>      // Include iostream for input and output functions
-#include <string>        // Include string library for string manipulation
-#include <chrono>        // Include chrono for time calculation
+#include "read_print.h"  // Access read_print.h
+#include <iostream>      
+#include <string>        
+#include <chrono>        // Include chrono for time measurements
 
-using namespace std;      // Use standard namespace
-using namespace chrono;   // Use chrono namespace for time-related functions
+using namespace std;      
+using namespace chrono;   
 
 // Heapify function to maintain heap property
 void heapify(SummedCount arr[], int n, int i) {
@@ -46,31 +46,32 @@ void heapSort(SummedCount arr[], int n) {
 }
 
 int main() {
-    Read_Data(); // Populate the array with data from the file
+    Read_Data(); // Call Read_Data() to read the data
 
     CalculateDeathSums(); // Calculate and store summed death counts for each region between 2005 and 2022
 
     // Start measuring time
-    auto start_time = high_resolution_clock::now(); // Record the start time
+    auto start_time = high_resolution_clock::now(); 
 
-    const int iterations = 1000; // Number of iterations for averaging
+    const int iterations = 1000; // Number of iterations to find average execution time of the algorithm
     for (int i = 0; i < iterations; ++i) {
+
         // Sort Summedcounts based on the total sum of each region in ascending order using HeapSort
-        heapSort(Summedcounts, MAXSUMS); // Call heapSort to sort the summed counts
+        heapSort(Summedcounts, MAXSUMS); 
     }
 
     // Stop measuring time
-    auto end_time = high_resolution_clock::now(); // Record the end time
+    auto end_time = high_resolution_clock::now();
 
-    // Calculate duration
+    // Calculate duration of the sorting
     auto duration = duration_cast<microseconds>(end_time - start_time); // Calculate the duration in microseconds
 
-    // Print the contents of Summedcounts array
+    // Print the contents of the Summedcounts array
     cout << "Summed Death Counts for each region between 2005 and 2022 :" << endl << endl;
     PrintSummedCounts(Summedcounts, MAXSUMS); 
 
-    // Print the execution time
-    cout << "Average HeapSort execution time: " << duration.count() / iterations << " microseconds" << endl; // Print the execution time
+    // Print the average execution time of heapsort
+    cout << "Average HeapSort execution time: " << duration.count() / iterations << " microseconds" << endl;
 
     return 0; 
 }
