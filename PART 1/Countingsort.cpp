@@ -1,7 +1,7 @@
-#include "read_print.h"
+#include "read_print.h"  // Access read_print.h
 #include <iostream>
 #include <string>
-#include <chrono>
+#include <chrono>    // Include chrono for time measurements
 
 using namespace std;
 using namespace chrono;
@@ -50,31 +50,32 @@ void countingSort(SummedCount arr[], int n) {
 }
 
 int main() {
-    Read_Data(); // Populate the array with data from the file
+    Read_Data(); // Call Read_Data() to read the data
 
     CalculateDeathSums(); // Calculate and store summed death counts for each region between 2005 and 2022
 
     // Start measuring time
-    auto start_time = high_resolution_clock::now(); // Record the start time
+    auto start_time = high_resolution_clock::now(); 
 
-    const int iterations = 1000; // Number of iterations for averaging
+    const int iterations = 1000; // Number of iterations to find average execution time of the algorithm
     for (int i = 0; i < iterations; ++i) {
+
         // Sort Summedcounts based on the total sum of each region in ascending order using Counting Sort
-        countingSort(Summedcounts, MAXSUMS); // Call countingSort to sort the summed counts
+        countingSort(Summedcounts, MAXSUMS); 
     }
 
     // Stop measuring time
-    auto end_time = high_resolution_clock::now(); // Record the end time
+    auto end_time = high_resolution_clock::now(); 
 
-    // Calculate duration
+    // Calculate duration of the sorting
     auto duration = duration_cast<microseconds>(end_time - start_time); // Calculate the duration in microseconds
 
     // Print the contents of Summedcounts array
     cout << "Summed Death Counts for each region between 2005 and 2022 :" << endl << endl;
-    PrintSummedCounts(Summedcounts, MAXSUMS); // Call function to print the summed counts
+    PrintSummedCounts(Summedcounts, MAXSUMS); 
 
-    // Print the execution time
-    cout << "Average Counting Sort execution time: " << duration.count() / iterations << " microseconds" << endl; // Print the execution time
+    // Print the average execution time of Counting sort
+    cout << "Average Counting Sort execution time: " << duration.count() / iterations << " microseconds" << endl; 
 
-    return 0; // Return 0 to indicate successful execution
+    return 0; 
 }
