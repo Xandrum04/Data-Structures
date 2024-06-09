@@ -119,8 +119,8 @@ Node* buildBST() {
 
 void displayMenu() {
     cout << "Menu:" << endl;
-    cout << "1. Search for Period/Periods with the minimum Count of Births." << endl;
-    cout << "2. Search for Period/Periods with the maximum Count of Births." << endl;
+    cout << "1. Search for Region/Regions with the minimum Count of Births." << endl;
+    cout << "2. Search for Region/Regions with the maximum Count of Births." << endl;
     cout << "3. Exit." << endl;
 }
 
