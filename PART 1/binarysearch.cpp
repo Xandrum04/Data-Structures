@@ -6,10 +6,10 @@
 using namespace std;
 using namespace chrono;
 
+bool printOnce= false;  //boolean value to print the found counts once
 
    void BinarySearch(SummedCount Summedcounts[], int size, int b1, int b2) {
-    // Sort the Summedcounts array using heap sort based on the Sum value
-    heapSort(Summedcounts, size);
+    
 
     int left = 0, right = size - 1;  // define the index left and right of the array
     int leftBoundary = -1;           // leftboundary = the first sum to be greater than b1
@@ -28,6 +28,8 @@ using namespace chrono;
         }
     }
 
+    if (!printOnce){ //if printOnce is false then print the found regions
+
     // If no valid boundary found, return
     if (leftBoundary == -1) {
         cout << "No regions found with summed birth counts in the given range." << endl;
@@ -39,6 +41,7 @@ using namespace chrono;
 
     for (int i = leftBoundary; i < size && Summedcounts[i].Sum <= b2; ++i) {
         cout << "Region: " << Summedcounts[i].Region << ", Sum: " << Summedcounts[i].Sum << endl;
+    }
     }
 }
 
@@ -52,25 +55,33 @@ int main()
 
     CalculateBirthSums(); // Calculate and store summed birth counts for each region between 2005 and 2022
 
-    
- // Start measuring time
-    auto start_time = high_resolution_clock::now();
+    // Sort the Summedcounts array using heap sort based on the Sum value
+    heapSort(Summedcounts, MAXSUMS);
 
     int b1, b2; //define bound b1 and bound b2
     cout << "Enter the lower bound (b1) and upper bound (b2) for the birth counts range: ";
     cin >> b1 >> b2;
 
+ // Start measuring time
+    auto start_time = high_resolution_clock::now();
+
+    const int iterations = 2000; // Number of iterations to find average execution time of the algorithm
+    for (int i = 0; i < iterations; ++i) {
+
+        
+
     BinarySearch(Summedcounts, MAXSUMS, b1, b2);  // Perform Binary Search on the data
-    
+    printOnce = true;  
+    }
     // Stop measuring time
     auto end_time = high_resolution_clock::now();
 
-    // Calculate the duration
-    auto duration = duration_cast<microseconds>(end_time - start_time);
+    
+    auto duration = duration_cast<microseconds>(end_time - start_time); // Calculate the duration in microseconds
 
    
-// Print the execution time
-    cout << "Binary Search execution time: " << duration.count() << " microseconds" << endl;
+    // Print the average execution time of Binary Search
+    cout << "Binary Search execution time: " << duration.count() / iterations << " microseconds" << endl;
     
   
 
