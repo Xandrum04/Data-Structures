@@ -42,8 +42,9 @@ int main() {
     // Start measuring time
     auto start_time = high_resolution_clock::now();
 
-    const int iterations = 1000; // Number of iterations for averaging
+    const int iterations = 1000; // Number of iterations to find average execution time of the algorithm
     for (int i = 0; i < iterations; ++i) {
+        
         // Sort Summedcounts based on the total sum of each region using QuickSort
         quickSort(Summedcounts, 0, MAXSUMS - 1);
     }
@@ -51,14 +52,14 @@ int main() {
     // Stop measuring time
     auto end_time = high_resolution_clock::now();
 
-    // Calculate duration
+    // Calculate duration of the sorting
     auto duration = duration_cast<microseconds>(end_time - start_time);  // Calculate the duration in microseconds
 
     // Print the contents of Summedcounts array
     cout << "Summed Birth Counts for each region between 2005 and 2022 :" << endl << endl;
     PrintSummedCounts(Summedcounts, MAXSUMS);
 
-    // Print the execution time
+    // Print the average execution time of quick sort
     cout << "Average Quicksort execution time: " << duration.count() / iterations << " microseconds" << endl;
 
     return 0;
